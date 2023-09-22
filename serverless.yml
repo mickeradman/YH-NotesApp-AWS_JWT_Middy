@@ -1,0 +1,86 @@
+service: middlewares-middy
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: eu-north-1
+  profile: ${env:PROFILE}
+  iam:
+    role: ${env:LAMBDA_ROLE}
+  deploymentMethod: direct
+
+useDotenv: true
+
+plugins:
+  - serverless-webpack
+
+package:
+  individually: true
+
+functions:
+  getNotes:
+    handler: functions/notes/getNotes/index.handler
+    events:
+      - httpApi:
+          path: "/api/notes"
+          method: GET
+  postNote:
+    handler: functions/notes/postNote/index.handler
+    events:
+      - httpApi:
+          path: "/api/notes"
+          method: POST
+  updateNote:
+    handler: functions/notes/updateNote/index.handler
+    events:
+      - httpApi:
+          path: "/api/notes"
+          method: PUT
+  deleteNote:
+    handler: functions/notes/deleteNote/index.handler
+    events:
+      - httpApi:
+          path: "/api/notes"
+          method: DELETE
+  userLogin:
+    handler: functions/user/userLogin/index.handler
+    events:
+      - httpApi:
+          path: "/api/user/login"
+          method: POST
+  userSignup:
+    handler: functions/user/userSignup/index.handler
+    events:
+      - httpApi:
+          path: "/api/user/signup"
+          method: POST
+
+resources:
+  Resources:
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: usersDb
+        AttributeDefinitions:
+          - AttributeName: username
+            AttributeType: S
+        KeySchema:
+          - AttributeName: username
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+    NotesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: notesDb
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: username
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+          - AttributeName: username
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST

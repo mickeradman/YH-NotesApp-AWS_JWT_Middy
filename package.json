@@ -1,0 +1,23 @@
+{
+  "name": "5.1-middlewares_ovnigar_middy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@middy/core": "^4.6.4",
+    "aws-sdk": "^2.1459.0",
+    "dotenv": "^16.3.1",
+    "jsonwebtoken": "^9.0.2",
+    "luxon": "^3.4.3",
+    "nanoid": "^5.0.1"
+  },
+  "devDependencies": {
+    "serverless-webpack": "^5.13.0"
+  },
+  "description": ""
+}
